@@ -74,17 +74,50 @@ function scene:create( event )
 	}
 	backgroundMusic = audio.loadStream("bensound-energy.mp3",0)
 
+	-- GAME CONFIGURATION
+	local player1HP = 20
+	local player2HP = 20
+	local bulletSpeed = 400
+	local impact = -1
+
 	-- CREATING PLAYERS
 	local player1 = display.newImageRect("crate.png", 90, 90)
 	player1.x = display.contentCenterX - display.contentCenterX / 1.2
 	player1.y = grass.y - 90
 	physics.addBody(player1, "static")
+	player1.myName = "PLAYER1"
 
 	local player2 = display.newImageRect("crate.png", 90, 90)
 	player2.x = display.contentCenterX + display.contentCenterX / 1.2
 	player2.y = grass.y - 90
 	physics.addBody(player2, "static")
-	
+	player2.myName = "PLAYER2"
+
+	-- HP bar
+	local healthBar1 = display.newRect(300,300,100,10)
+	healthBar1.x = player1.x
+	healthBar1.y = player1.y - 80
+	healthBar1:setFillColor(0,255,0)
+
+	local damageBar1 = display.newRect(300,300,100,10)
+	damageBar1:setFillColor(255,0,0)
+	damageBar1.x = player1.x
+	damageBar1.y = player1.y - 80
+	damageBar1.strokeWidth = 1
+	damageBar1:setStrokeColor(255,255,255,0.5)
+	-- hp = 20, bar = 100, - 5 each times 
+
+	local healthBar2 = display.newRect(300,300,100,10)
+	healthBar2.x = player2.x
+	healthBar2.y = player2.y - 80
+	healthBar2:setFillColor(0,255,0)
+
+	local damageBar2 = display.newRect(300,300,100,10)
+	damageBar2:setFillColor(255,0,0)
+	damageBar2.x = player2.x
+	damageBar2.y = player2.y - 80
+	damageBar2.strokeWidth = 1
+	damageBar2:setStrokeColor(255,255,255,0.5)
 
 	-- BUTTONS
 	local rock1 = display.newImageRect("rock.png", 70,70)
@@ -127,15 +160,15 @@ function scene:create( event )
 		transition.fadeOut(text1, {time = 1000})
 
 		local rockBullet1 = display.newImageRect("rock.png", 40, 40)
-		rockBullet1.x = player1.x
+		rockBullet1.x = player1.x+70
 		rockBullet1.y = player1.y-5
 		physics.addBody(rockBullet1, "dynamic")
 		rockBullet1.gravityScale = 0
 		rockBullet1.isBullet = true
-		rockBullet1:setLinearVelocity(400,0)
+		rockBullet1:setLinearVelocity(bulletSpeed,0)
 		rockBullet1.myName = "ROCK"
 		sceneGroup:insert(rockBullet1)
-		audio.play(soundTable["rockFX"])
+		--audio.play(soundTable["rockFX"])
 	end
 
 	local function scissor1Tap()
@@ -146,15 +179,15 @@ function scene:create( event )
 		transition.fadeOut(text1, {time = 1000})
 
 		local scissorBullet1 = display.newImageRect("scissor.png", 40, 40)
-		scissorBullet1.x = player1.x
+		scissorBullet1.x = player1.x+70
 		scissorBullet1.y = player1.y-5
 		physics.addBody(scissorBullet1, "dynamic")
 		scissorBullet1.gravityScale = 0
 		scissorBullet1.isBullet = true
-		scissorBullet1:setLinearVelocity(400,0)
+		scissorBullet1:setLinearVelocity(bulletSpeed,0)
 	    scissorBullet1.myName = "SCISSOR"
 		sceneGroup:insert(scissorBullet1)
-		audio.play(soundTable["scissorFX"])
+		--audio.play(soundTable["scissorFX"])
 	end
 
 	local function paper1Tap()
@@ -165,15 +198,15 @@ function scene:create( event )
 		transition.fadeOut(text1, {time = 1000})
 
 		local paperBullet1 = display.newImageRect("paper.png", 40, 40)
-		paperBullet1.x = player1.x
+		paperBullet1.x = player1.x+70
 		paperBullet1.y = player1.y-5
 		physics.addBody(paperBullet1, "dynamic")
 		paperBullet1.gravityScale = 0
 		paperBullet1.isBullet = true
-		paperBullet1:setLinearVelocity(400,0)
+		paperBullet1:setLinearVelocity(bulletSpeed,0)
 		sceneGroup:insert(paperBullet1)
 		paperBullet1.myName = "PAPER"
-		audio.play(soundTable["paperFX"])
+		--audio.play(soundTable["paperFX"])
 	end
 
 	local function rock2Tap()
@@ -184,15 +217,15 @@ function scene:create( event )
 		transition.fadeOut(text1, {time = 1000})
 
 		local rockBullet2 = display.newImageRect("rock.png", 40, 40)
-		rockBullet2.x = player2.x
+		rockBullet2.x = player2.x-70
 		rockBullet2.y = player2.y-5
 		physics.addBody(rockBullet2, "dynamic")
 		rockBullet2.gravityScale = 0
 		rockBullet2.isBullet = true
-		rockBullet2:setLinearVelocity(-400,0)
+		rockBullet2:setLinearVelocity(-bulletSpeed,0)
 		rockBullet2.myName = "ROCK"
 		sceneGroup:insert(rockBullet2)
-		audio.play(soundTable["rockFX"])
+		--audio.play(soundTable["rockFX"])
 	end
 
 	local function scissor2Tap()
@@ -203,15 +236,15 @@ function scene:create( event )
 		transition.fadeOut(text1, {time = 1000})
 
 		local scissorBullet2 = display.newImageRect("scissor.png", 40, 40)
-		scissorBullet2.x = player2.x
+		scissorBullet2.x = player2.x-70
 		scissorBullet2.y = player2.y-5
 		physics.addBody(scissorBullet2, "dynamic")
 		scissorBullet2.gravityScale = 0
 		scissorBullet2.isBullet = true
-		scissorBullet2:setLinearVelocity(-400,0)
+		scissorBullet2:setLinearVelocity(-bulletSpeed,0)
 		scissorBullet2.myName = "SCISSOR"
 		sceneGroup:insert(scissorBullet2)
-		audio.play(soundTable["scissorFX"])
+		--audio.play(soundTable["scissorFX"])
 	end
 
 	local function paper2Tap()
@@ -222,24 +255,39 @@ function scene:create( event )
 		transition.fadeOut(text1, {time = 1000})
 
 		local paperBullet2 = display.newImageRect("paper.png", 40, 40)
-		paperBullet2.x = player2.x
+		paperBullet2.x = player2.x-70
 		paperBullet2.y = player2.y-5
 		physics.addBody(paperBullet2, "dynamic")
 		paperBullet2.gravityScale = 0
 		paperBullet2.isBullet = true
-		paperBullet2:setLinearVelocity(-400,0)
+		paperBullet2:setLinearVelocity(-bulletSpeed,0)
 		paperBullet2.myName = "PAPER"
 		sceneGroup:insert(paperBullet2)
-		audio.play(soundTable["paperFX"])
+		--audio.play(soundTable["paperFX"])
 	end
 
 	local function returnButtonTap()
 		composer.gotoScene( "menu", "fade", 500 )
 	end
 
-	-- COLLSION HANDLER 
+	-- CHECK WINNING CONDITION
+	function checkWin()
+		if player1HP == 0 or player2HP == 0 then
+			print("GAME OVER")
+			--composer.gotoScene("menu")
+		end
+	end
+
+	-- UPDATE HP BAR 
+	function updateHPbar(obj)
+		obj.x = obj.x - 2.5
+		obj.width = obj.width - 5
+		checkWin()
+	end
+
+	-- COLLSION HANDLER AND UPDATER
 	local function onGlobalCollision(event)
-		if event.phase == "ended" then
+		if event.phase == "began" then
 		    -- same object RR, SS, PP (1-3)
 			if event.object1.myName == event.object2.myName then
 				destroyObj(event.object1)
@@ -269,7 +317,27 @@ function scene:create( event )
 			elseif event.object1.myName == "PAPER" and event.object2.myName == "SCISSOR" then
 				destroyObj(event.object2)
 				print("case 9")
+		    -- HP COUNTER
+			elseif event.object1.myName == "PLAYER2" and event.object2.myName == "ROCK" then
+				player2HP = player2HP - 1
+				updateHPbar(healthBar2)
+			elseif event.object1.myName == "PLAYER1" and event.object2.myName == "ROCK" then
+				player1HP = player1HP - 1
+				updateHPbar(healthBar1)
+			elseif event.object1.myName == "PLAYER2" and event.object2.myName == "SCISSOR" then
+				player2HP = player2HP - 1
+				updateHPbar(healthBar2)
+			elseif event.object1.myName == "PLAYER1" and event.object2.myName == "Scissor1" then
+				player1HP = player1HP - 1
+				updateHPbar(healthBar1)
+			elseif event.object1.myName == "PLAYER2" and event.object2.myName == "PAPER" then
+				player2HP = player2HP - 1
+				updateHPbar(healthBar2)
+			elseif event.object1.myName == "PLAYER1" and event.object2.myName == "PAPER" then
+				player1HP = player1HP - 1
+				updateHPbar(healthBar1)
 			end
+			print(""..player2HP.."")
 		end
 	end
 
@@ -296,7 +364,11 @@ function scene:create( event )
 	sceneGroup:insert( scissor2 )
 	sceneGroup:insert( paper1 )
 	sceneGroup:insert( paper2 )
-	sceneGroup:insert (returnButton)
+	sceneGroup:insert( returnButton )
+	sceneGroup:insert(damageBar1)
+	sceneGroup:insert(healthBar1)
+	sceneGroup:insert(damageBar2)
+	sceneGroup:insert(healthBar2)
 
 end
 
@@ -313,7 +385,7 @@ function scene:show( event )
 		-- INSERT code here to make the scene come alive
 		-- e.g. start timers, begin animation, play audio, etc.
 		physics.start()
-		audio.play(backgroundMusic)
+		--audio.play(backgroundMusic)
 	end
 end
 
@@ -328,7 +400,7 @@ function scene:hide( event )
 		-- INSERT code here to pause the scene
 		-- e.g. stop timers, stop animation, unload sounds, etc.)
 		--audio.fade( 500 )
-		audio.stop( )
+		audio.stop()
 		physics.stop()
 	elseif phase == "did" then
 		-- Called when the scene is now off screen
@@ -346,6 +418,7 @@ function scene:destroy( event )
 	
 	package.loaded[physics] = nil
 	physics = nil
+
 end
 
 ---------------------------------------------------------------------------------

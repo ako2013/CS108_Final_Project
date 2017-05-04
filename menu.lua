@@ -79,6 +79,7 @@ function scene:show( event )
 		-- INSERT code here to make the scene come alive
 		-- e.g. start timers, begin animation, play audio, etc.
 		audio.play()
+		timer.performWithDelay( 25, function() self:removeMinigames() end )
 	end	
 end
 
@@ -110,6 +111,11 @@ function scene:destroy( event )
 		playBtn:removeSelf()	-- widgets must be manually removed
 		playBtn = nil
 	end
+end
+
+function scene:removeMinigames()
+	composer.removeScene( "level1" )
+	composer.removeScene( "info" )
 end
 
 ---------------------------------------------------------------------------------
