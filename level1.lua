@@ -62,8 +62,8 @@ function scene:create( event )
 	physics.addBody( grass, "static", { friction=0.3, shape=grassShape } )
 
 	local returnButton = display.newImageRect("9.png", 50,50)
-	returnButton.x = 200
-	returnButton.y = 150
+	returnButton.x = 100
+	returnButton.y = 50
 
 	-- SOUND 
 	audio.setVolume(1)
@@ -73,77 +73,77 @@ function scene:create( event )
 		paperFX = audio.loadSound("paperFX.mp3")
 	}
 	backgroundMusic = audio.loadStream("bensound-energy.mp3",0)
+	function startGame()
+		-- GAME CONFIGURATION
+		local player1HP = 20
+		local player2HP = 20
+		local bulletSpeed = 400
+		local impact = -1
 
-	-- GAME CONFIGURATION
-	local player1HP = 20
-	local player2HP = 20
-	local bulletSpeed = 400
-	local impact = -1
+		-- CREATING PLAYERS
+		local player1 = display.newImageRect("crate.png", 90, 90)
+		player1.x = display.contentCenterX - display.contentCenterX / 1.2
+		player1.y = grass.y - 90
+		physics.addBody(player1, "static")
+		player1.myName = "PLAYER1"
 
-	-- CREATING PLAYERS
-	local player1 = display.newImageRect("crate.png", 90, 90)
-	player1.x = display.contentCenterX - display.contentCenterX / 1.2
-	player1.y = grass.y - 90
-	physics.addBody(player1, "static")
-	player1.myName = "PLAYER1"
+		local player2 = display.newImageRect("crate.png", 90, 90)
+		player2.x = display.contentCenterX + display.contentCenterX / 1.2
+		player2.y = grass.y - 90
+		physics.addBody(player2, "static")
+		player2.myName = "PLAYER2"
 
-	local player2 = display.newImageRect("crate.png", 90, 90)
-	player2.x = display.contentCenterX + display.contentCenterX / 1.2
-	player2.y = grass.y - 90
-	physics.addBody(player2, "static")
-	player2.myName = "PLAYER2"
+		-- HP bar
+		local healthBar1 = display.newRect(300,300,100,10)
+		healthBar1.x = player1.x
+		healthBar1.y = player1.y - 80
+		healthBar1:setFillColor(0,255,0)
 
-	-- HP bar
-	local healthBar1 = display.newRect(300,300,100,10)
-	healthBar1.x = player1.x
-	healthBar1.y = player1.y - 80
-	healthBar1:setFillColor(0,255,0)
+		local damageBar1 = display.newRect(300,300,100,10)
+		damageBar1:setFillColor(255,0,0)
+		damageBar1.x = player1.x
+		damageBar1.y = player1.y - 80
+		damageBar1.strokeWidth = 1
+		damageBar1:setStrokeColor(255,255,255,0.5)
+		-- hp = 20, bar = 100, - 5 each times 
 
-	local damageBar1 = display.newRect(300,300,100,10)
-	damageBar1:setFillColor(255,0,0)
-	damageBar1.x = player1.x
-	damageBar1.y = player1.y - 80
-	damageBar1.strokeWidth = 1
-	damageBar1:setStrokeColor(255,255,255,0.5)
-	-- hp = 20, bar = 100, - 5 each times 
+		local healthBar2 = display.newRect(300,300,100,10)
+		healthBar2.x = player2.x
+		healthBar2.y = player2.y - 80
+		healthBar2:setFillColor(0,255,0)
 
-	local healthBar2 = display.newRect(300,300,100,10)
-	healthBar2.x = player2.x
-	healthBar2.y = player2.y - 80
-	healthBar2:setFillColor(0,255,0)
+		local damageBar2 = display.newRect(300,300,100,10)
+		damageBar2:setFillColor(255,0,0)
+		damageBar2.x = player2.x
+		damageBar2.y = player2.y - 80
+		damageBar2.strokeWidth = 1
+		damageBar2:setStrokeColor(255,255,255,0.5)
 
-	local damageBar2 = display.newRect(300,300,100,10)
-	damageBar2:setFillColor(255,0,0)
-	damageBar2.x = player2.x
-	damageBar2.y = player2.y - 80
-	damageBar2.strokeWidth = 1
-	damageBar2:setStrokeColor(255,255,255,0.5)
+		-- BUTTONS
+		local rock1 = display.newImageRect("rock.png", 70,70)
+		rock1.x = player1.x - 20
+		rock1.y = player1.y - 425
 
-	-- BUTTONS
-	local rock1 = display.newImageRect("rock.png", 70,70)
-	rock1.x = player1.x - 20
-	rock1.y = player1.y - 425
+		local rock2 = display.newImageRect("rock.png", 70,70)
+		rock2.x = player2.x + 20
+		rock2.y = player2.y - 425
 
-	local rock2 = display.newImageRect("rock.png", 70,70)
-	rock2.x = player2.x + 20
-	rock2.y = player2.y - 425
+		local scissor1 = display.newImageRect("scissor.png", 50,70)
+		scissor1.x = player1.x - 20
+		scissor1.y = player1.y - 300
 
-	local scissor1 = display.newImageRect("scissor.png", 50,70)
-	scissor1.x = player1.x - 20
-	scissor1.y = player1.y - 300
+		local scissor2 = display.newImageRect("scissor.png", 50,70)
+		scissor2.x = player2.x + 20
+		scissor2.y = player2.y - 300
 
-	local scissor2 = display.newImageRect("scissor.png", 50,70)
-	scissor2.x = player2.x + 20
-	scissor2.y = player2.y - 300
+		local paper1 = display.newImageRect("paper.png", 50,70)
+		paper1.x = player1.x - 20
+		paper1.y = player1.y - 175
 
-	local paper1 = display.newImageRect("paper.png", 50,70)
-	paper1.x = player1.x - 20
-	paper1.y = player1.y - 175
-
-	local paper2 = display.newImageRect("paper.png", 50,70)
-	paper2.x = player2.x + 20
-	paper2.y = player2.y - 175
-
+		local paper2 = display.newImageRect("paper.png", 50,70)
+		paper2.x = player2.x + 20
+		paper2.y = player2.y - 175
+	
 	-- GARBAGE COLLECTOR
 	local function destroyObj (obj)
 		if obj ~= nil then
@@ -280,8 +280,10 @@ function scene:create( event )
 
 	-- UPDATE HP BAR 
 	function updateHPbar(obj)
-		obj.x = obj.x - 2.5
-		obj.width = obj.width - 5
+		if obj.x ~= nil and obj.width ~= nil then 
+			obj.x = obj.x - 2.5
+			obj.width = obj.width - 5
+		end
 		checkWin()
 	end
 
@@ -311,7 +313,7 @@ function scene:create( event )
 				print("case 7")
 			-- S vs P case
 			elseif event.object1.myName == "SCISSOR" and event.object2.myName == "PAPER" then
-				destroyObj(event.object1)
+				destroyObj(event.object2)
 				print("case 8")
 			-- P vs S case
 			elseif event.object1.myName == "PAPER" and event.object2.myName == "SCISSOR" then
@@ -321,23 +323,30 @@ function scene:create( event )
 			elseif event.object1.myName == "PLAYER2" and event.object2.myName == "ROCK" then
 				player2HP = player2HP - 1
 				updateHPbar(healthBar2)
+				destroyObj(event.object2)
 			elseif event.object1.myName == "PLAYER1" and event.object2.myName == "ROCK" then
 				player1HP = player1HP - 1
 				updateHPbar(healthBar1)
+				destroyObj(event.object2)
 			elseif event.object1.myName == "PLAYER2" and event.object2.myName == "SCISSOR" then
 				player2HP = player2HP - 1
 				updateHPbar(healthBar2)
-			elseif event.object1.myName == "PLAYER1" and event.object2.myName == "Scissor1" then
+				destroyObj(event.object2)
+			elseif event.object1.myName == "PLAYER1" and event.object2.myName == "SCISSOR" then
 				player1HP = player1HP - 1
 				updateHPbar(healthBar1)
+				destroyObj(event.object2)
 			elseif event.object1.myName == "PLAYER2" and event.object2.myName == "PAPER" then
 				player2HP = player2HP - 1
 				updateHPbar(healthBar2)
+				destroyObj(event.object2)
 			elseif event.object1.myName == "PLAYER1" and event.object2.myName == "PAPER" then
 				player1HP = player1HP - 1
 				updateHPbar(healthBar1)
+				destroyObj(event.object2)
 			end
 			print(""..player2HP.."")
+			print(""..player1HP.."")
 		end
 	end
 
@@ -369,6 +378,7 @@ function scene:create( event )
 	sceneGroup:insert(healthBar1)
 	sceneGroup:insert(damageBar2)
 	sceneGroup:insert(healthBar2)
+end
 
 end
 
@@ -385,6 +395,7 @@ function scene:show( event )
 		-- INSERT code here to make the scene come alive
 		-- e.g. start timers, begin animation, play audio, etc.
 		physics.start()
+		startGame()
 		--audio.play(backgroundMusic)
 	end
 end
