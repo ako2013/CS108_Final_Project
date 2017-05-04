@@ -32,17 +32,22 @@ function scene:create( event )
 	-- INSERT code here to initialize the scene
 	-- e.g. add display objects to 'sceneGroup', add touch listeners, etc.
 
+	-- sounds
+	local backgroundMusic = audio.loadStream("bensound-happiness.mp3")
+	audio.play(backgroundMusic)
+
 	-- display a background image
-	local background = display.newImageRect( "background.jpg", display.actualContentWidth, display.actualContentHeight )
+	local background = display.newImageRect( "menu_background.png", display.actualContentWidth, display.actualContentHeight+100 )
 	background.anchorX = 0
 	background.anchorY = 0
 	background.x = 0 + display.screenOriginX 
-	background.y = 0 + display.screenOriginY
+	background.y = 0 + display.screenOriginY - 50
 	
 	-- create/position logo/title image on upper-half of the screen
-	local titleLogo = display.newImageRect( "logo.png", 264, 42 )
+	--local titleLogo = display.newImageRect( "logo.png", 264, 42 )
+	local titleLogo = display.newText( "RSP Ultra", 264, 10, native.systemFont, 120)
 	titleLogo.x = display.contentCenterX
-	titleLogo.y = 100
+	titleLogo.y = display.contentCenterY
 	
 	-- create a widget button (which will loads level1.lua on release)
 	playBtn = widget.newButton{
@@ -50,7 +55,7 @@ function scene:create( event )
 		labelColor = { default={255}, over={128} },
 		default="button.png",
 		over="button-over.png",
-		width=154, height=40,
+		width=204, height=90,
 		onRelease = onPlayBtnRelease	-- event listener function
 	}
 	playBtn.x = display.contentCenterX
@@ -73,6 +78,7 @@ function scene:show( event )
 		-- 
 		-- INSERT code here to make the scene come alive
 		-- e.g. start timers, begin animation, play audio, etc.
+		audio.play()
 	end	
 end
 
@@ -85,6 +91,8 @@ function scene:hide( event )
 		--
 		-- INSERT code here to pause the scene
 		-- e.g. stop timers, stop animation, unload sounds, etc.)
+		--audio.fade( 500 )
+		audio.stop( )
 	elseif phase == "did" then
 		-- Called when the scene is now off screen
 	end	
