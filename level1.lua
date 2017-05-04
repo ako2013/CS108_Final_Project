@@ -315,7 +315,7 @@ function scene:create( event )
 				print("case 8")
 			-- P vs S case
 			elseif event.object1.myName == "PAPER" and event.object2.myName == "SCISSOR" then
-				destroyObj(event.object2)
+				destroyObj(event.object1)
 				print("case 9")
 		    -- HP COUNTER
 			elseif event.object1.myName == "PLAYER2" and event.object2.myName == "ROCK" then
