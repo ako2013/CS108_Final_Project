@@ -72,7 +72,7 @@ function scene:create( event )
 		scissorFX = audio.loadSound("scissorFX.mp3"),
 		paperFX = audio.loadSound("paperFX.mp3")
 	}
-	backgroundMusic = audio.loadStream("bensound-energy.mp3")
+	backgroundMusic = audio.loadStream("bensound-energy.mp3",0)
 
 	-- CREATING PLAYERS
 	local player1 = display.newImageRect("crate.png", 90, 90)
@@ -113,8 +113,18 @@ function scene:create( event )
 
 	-- GARBAGE COLLECTOR
 	local function destroyObj (obj)
-		obj:removeSelf()
+		if obj ~= nil then
+			obj:removeSelf()
+		end
 	end
+
+	-- BULLETS
+	--local rockBullet1
+	--local rockBullet2
+	--local scissorBullet1
+	--local scissorBullet2
+	--local paperBullet1
+	--local paperBullet2
 
 	-- EVENT LISTENER
 	local function rock1Tap()
@@ -131,9 +141,10 @@ function scene:create( event )
 		rockBullet1.gravityScale = 0
 		rockBullet1.isBullet = true
 		rockBullet1:setLinearVelocity(400,0)
+		rockBullet1.myName = "ROCK"
 		sceneGroup:insert(rockBullet1)
 		audio.play(soundTable["rockFX"])
-		timer.performWithDelay(3000,function()destroyObj(rockBullet1)return true end, 1)
+		--timer.performWithDelay(6000,function()destroyObj(rockBullet1)return true end, 1)
 	end
 
 	local function scissor1Tap()
@@ -143,16 +154,16 @@ function scene:create( event )
 		sceneGroup:insert( text1)
 		transition.fadeOut(text1, {time = 1000})
 
-		local rockBullet1 = display.newImageRect("scissor.png", 40, 40)
-		rockBullet1.x = player1.x
-		rockBullet1.y = player1.y-5
-		physics.addBody(rockBullet1, "dynamic")
-		rockBullet1.gravityScale = 0
-		rockBullet1.isBullet = true
-		rockBullet1:setLinearVelocity(400,0)
-		sceneGroup:insert(rockBullet1)
+		local scissorBullet1 = display.newImageRect("scissor.png", 40, 40)
+		scissorBullet1.x = player1.x
+		scissorBullet1.y = player1.y-5
+		physics.addBody(scissorBullet1, "dynamic")
+		scissorBullet1.gravityScale = 0
+		scissorBullet1.isBullet = true
+		scissorBullet1:setLinearVelocity(400,0)
+		sceneGroup:insert(scissorBullet1)
 		audio.play(soundTable["scissorFX"])
-		timer.performWithDelay(3000,function()destroyObj(rockBullet1)return true end, 1)
+		timer.performWithDelay(3000,function()destroyObj(scissorBullet1)return true end, 1)
 	end
 
 	local function paper1Tap()
@@ -162,16 +173,16 @@ function scene:create( event )
 		sceneGroup:insert( text1)
 		transition.fadeOut(text1, {time = 1000})
 
-		local rockBullet1 = display.newImageRect("paper.png", 40, 40)
-		rockBullet1.x = player1.x
-		rockBullet1.y = player1.y-5
-		physics.addBody(rockBullet1, "dynamic")
-		rockBullet1.gravityScale = 0
-		rockBullet1.isBullet = true
-		rockBullet1:setLinearVelocity(400,0)
-		sceneGroup:insert(rockBullet1)
+		local paperBullet1 = display.newImageRect("paper.png", 40, 40)
+		paperBullet1.x = player1.x
+		paperBullet1.y = player1.y-5
+		physics.addBody(paperBullet1, "dynamic")
+		paperBullet1.gravityScale = 0
+		paperBullet1.isBullet = true
+		paperBullet1:setLinearVelocity(400,0)
+		sceneGroup:insert(paperBullet1)
 		audio.play(soundTable["paperFX"])
-		timer.performWithDelay(3000,function()destroyObj(rockBullet1)return true end, 1)
+		timer.performWithDelay(3000,function()destroyObj(paperBullet1)return true end, 1)
 	end
 
 	local function rock2Tap()
@@ -181,16 +192,17 @@ function scene:create( event )
 		sceneGroup:insert( text1)
 		transition.fadeOut(text1, {time = 1000})
 
-		local rockBullet1 = display.newImageRect("rock.png", 40, 40)
-		rockBullet1.x = player2.x
-		rockBullet1.y = player2.y-5
-		physics.addBody(rockBullet1, "dynamic")
-		rockBullet1.gravityScale = 0
-		rockBullet1.isBullet = true
-		rockBullet1:setLinearVelocity(-400,0)
-		sceneGroup:insert(rockBullet1)
+		local rockBullet2 = display.newImageRect("rock.png", 40, 40)
+		rockBullet2.x = player2.x
+		rockBullet2.y = player2.y-5
+		physics.addBody(rockBullet2, "dynamic")
+		rockBullet2.gravityScale = 0
+		rockBullet2.isBullet = true
+		rockBullet2:setLinearVelocity(-400,0)
+		rockBullet2.myName = "ROCK"
+		sceneGroup:insert(rockBullet2)
 		audio.play(soundTable["rockFX"])
-		timer.performWithDelay(3000,function()destroyObj(rockBullet1)return true end, 1)
+		--timer.performWithDelay(6000,function()destroyObj(rockBullet2)return true end, 1)
 	end
 
 	local function scissor2Tap()
@@ -200,16 +212,16 @@ function scene:create( event )
 		sceneGroup:insert( text1)
 		transition.fadeOut(text1, {time = 1000})
 
-		local rockBullet1 = display.newImageRect("scissor.png", 40, 40)
-		rockBullet1.x = player2.x
-		rockBullet1.y = player2.y-5
-		physics.addBody(rockBullet1, "dynamic")
-		rockBullet1.gravityScale = 0
-		rockBullet1.isBullet = true
-		rockBullet1:setLinearVelocity(-400,0)
-		sceneGroup:insert(rockBullet1)
+		local scissorBullet2 = display.newImageRect("scissor.png", 40, 40)
+		scissorBullet2.x = player2.x
+		scissorBullet2.y = player2.y-5
+		physics.addBody(scissorBullet2, "dynamic")
+		scissorBullet2.gravityScale = 0
+		scissorBullet2.isBullet = true
+		scissorBullet2:setLinearVelocity(-400,0)
+		sceneGroup:insert(scissorBullet2)
 		audio.play(soundTable["scissorFX"])
-		timer.performWithDelay(3000,function()destroyObj(rockBullet1)return true end, 1)
+		timer.performWithDelay(3000,function()destroyObj(scissorBullet2)return true end, 1)
 	end
 
 	local function paper2Tap()
@@ -219,20 +231,30 @@ function scene:create( event )
 		sceneGroup:insert( text1)
 		transition.fadeOut(text1, {time = 1000})
 
-		local rockBullet1 = display.newImageRect("paper.png", 40, 40)
-		rockBullet1.x = player2.x
-		rockBullet1.y = player2.y-5
-		physics.addBody(rockBullet1, "dynamic")
-		rockBullet1.gravityScale = 0
-		rockBullet1.isBullet = true
-		rockBullet1:setLinearVelocity(-400,0)
-		sceneGroup:insert(rockBullet1)
+		local paperBullet2 = display.newImageRect("paper.png", 40, 40)
+		paperBullet2.x = player2.x
+		paperBullet2.y = player2.y-5
+		physics.addBody(paperBullet2, "dynamic")
+		paperBullet2.gravityScale = 0
+		paperBullet2.isBullet = true
+		paperBullet2:setLinearVelocity(-400,0)
+		sceneGroup:insert(paperBullet2)
 		audio.play(soundTable["paperFX"])
-		timer.performWithDelay(3000,function()destroyObj(rockBullet1)return true end, 1)
+		timer.performWithDelay(3000,function()destroyObj(paperBullet2)return true end, 1)
 	end
 
 	local function returnButtonTap()
 		composer.gotoScene( "menu", "fade", 500 )
+	end
+
+	-- COLLSION HANDLER 
+	local function onGlobalCollision(event)
+		if event.phase == "began" then
+			if event.object1.myName == event.object2.myName then
+				destroyObj(event.object1)
+				destroyObj(event.object2)
+			end
+		end
 	end
 
 	-- LISTENER
@@ -243,6 +265,9 @@ function scene:create( event )
 	paper1:addEventListener("tap", paper1Tap)
 	paper2:addEventListener("tap", paper2Tap)
 	returnButton:addEventListener("tap", returnButtonTap)
+	
+	Runtime:addEventListener("collision", onGlobalCollision)
+
 	
 	-- all display objects must be inserted into group
 	sceneGroup:insert( background )
@@ -287,7 +312,7 @@ function scene:hide( event )
 		--
 		-- INSERT code here to pause the scene
 		-- e.g. stop timers, stop animation, unload sounds, etc.)
-		audio.fade( 500 )
+		--audio.fade( 500 )
 		audio.stop( )
 		physics.stop()
 	elseif phase == "did" then

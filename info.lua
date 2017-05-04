@@ -19,7 +19,7 @@ local playBtn
 local function onPlayBtnRelease()
 	
 	-- go to level1.lua scene
-	composer.gotoScene( "info", "fade", 500 )
+	composer.gotoScene( "level1", "fade", 500 )
 	
 	return true	-- indicates successful touch
 end
@@ -33,8 +33,6 @@ function scene:create( event )
 	-- e.g. add display objects to 'sceneGroup', add touch listeners, etc.
 
 	-- sounds
-	local backgroundMusic = audio.loadStream("bensound-happiness.mp3")
-	audio.play(backgroundMusic)
 
 	-- display a background image
 	local background = display.newImageRect( "menu_background.png", display.actualContentWidth, display.actualContentHeight+100 )
@@ -42,16 +40,21 @@ function scene:create( event )
 	background.anchorY = 0
 	background.x = 0 + display.screenOriginX 
 	background.y = 0 + display.screenOriginY - 50
+    background:setFillColor(0.2)
 	
 	-- create/position logo/title image on upper-half of the screen
 	--local titleLogo = display.newImageRect( "logo.png", 264, 42 )
-	local titleLogo = display.newText( "RSP Ultra", 264, 10, native.systemFont, 120)
+	local titleLogo = display.newText( "Info", 264, 10, native.systemFont, 120)
 	titleLogo.x = display.contentCenterX
-	titleLogo.y = display.contentCenterY
+	titleLogo.y = display.contentCenterY - 300
+
+    local info = display.newText ("This is not meant to be played on P.Cs \n The collisions with the objects are really buggy right now \n therefor no end game yet", 264,10, native.systemFont, 30)
+    info.x = titleLogo.x
+    info.y = titleLogo.y + 200
 	
 	-- create a widget button (which will loads level1.lua on release)
 	playBtn = widget.newButton{
-		label="Play Now",
+		label="Continue",
 		labelColor = { default={255}, over={128} },
 		default="button.png",
 		over="button-over.png",
@@ -65,6 +68,7 @@ function scene:create( event )
 	sceneGroup:insert( background )
 	sceneGroup:insert( titleLogo )
 	sceneGroup:insert( playBtn )
+    sceneGroup:insert( info )
 end
 
 function scene:show( event )
@@ -78,7 +82,7 @@ function scene:show( event )
 		-- 
 		-- INSERT code here to make the scene come alive
 		-- e.g. start timers, begin animation, play audio, etc.
-		audio.play()
+		--audio.play()
 	end	
 end
 
@@ -92,7 +96,7 @@ function scene:hide( event )
 		-- INSERT code here to pause the scene
 		-- e.g. stop timers, stop animation, unload sounds, etc.)
 		--audio.fade( 500 )
-		--audio.stop( )
+		audio.stop( )
 	elseif phase == "did" then
 		-- Called when the scene is now off screen
 	end	
