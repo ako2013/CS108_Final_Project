@@ -118,14 +118,6 @@ function scene:create( event )
 		end
 	end
 
-	-- BULLETS
-	--local rockBullet1
-	--local rockBullet2
-	--local scissorBullet1
-	--local scissorBullet2
-	--local paperBullet1
-	--local paperBullet2
-
 	-- EVENT LISTENER
 	local function rock1Tap()
 		local text1 = display.newText("Rock1 tapped", 264, 10, native.systemFont, 60)
@@ -144,7 +136,6 @@ function scene:create( event )
 		rockBullet1.myName = "ROCK"
 		sceneGroup:insert(rockBullet1)
 		audio.play(soundTable["rockFX"])
-		--timer.performWithDelay(6000,function()destroyObj(rockBullet1)return true end, 1)
 	end
 
 	local function scissor1Tap()
@@ -161,9 +152,9 @@ function scene:create( event )
 		scissorBullet1.gravityScale = 0
 		scissorBullet1.isBullet = true
 		scissorBullet1:setLinearVelocity(400,0)
+	    scissorBullet1.myName = "SCISSOR"
 		sceneGroup:insert(scissorBullet1)
 		audio.play(soundTable["scissorFX"])
-		timer.performWithDelay(3000,function()destroyObj(scissorBullet1)return true end, 1)
 	end
 
 	local function paper1Tap()
@@ -181,8 +172,8 @@ function scene:create( event )
 		paperBullet1.isBullet = true
 		paperBullet1:setLinearVelocity(400,0)
 		sceneGroup:insert(paperBullet1)
+		paperBullet1.myName = "PAPER"
 		audio.play(soundTable["paperFX"])
-		timer.performWithDelay(3000,function()destroyObj(paperBullet1)return true end, 1)
 	end
 
 	local function rock2Tap()
@@ -202,7 +193,6 @@ function scene:create( event )
 		rockBullet2.myName = "ROCK"
 		sceneGroup:insert(rockBullet2)
 		audio.play(soundTable["rockFX"])
-		--timer.performWithDelay(6000,function()destroyObj(rockBullet2)return true end, 1)
 	end
 
 	local function scissor2Tap()
@@ -219,9 +209,9 @@ function scene:create( event )
 		scissorBullet2.gravityScale = 0
 		scissorBullet2.isBullet = true
 		scissorBullet2:setLinearVelocity(-400,0)
+		scissorBullet2.myName = "SCISSOR"
 		sceneGroup:insert(scissorBullet2)
 		audio.play(soundTable["scissorFX"])
-		timer.performWithDelay(3000,function()destroyObj(scissorBullet2)return true end, 1)
 	end
 
 	local function paper2Tap()
@@ -238,9 +228,9 @@ function scene:create( event )
 		paperBullet2.gravityScale = 0
 		paperBullet2.isBullet = true
 		paperBullet2:setLinearVelocity(-400,0)
+		paperBullet2.myName = "PAPER"
 		sceneGroup:insert(paperBullet2)
 		audio.play(soundTable["paperFX"])
-		timer.performWithDelay(3000,function()destroyObj(paperBullet2)return true end, 1)
 	end
 
 	local function returnButtonTap()
@@ -249,10 +239,36 @@ function scene:create( event )
 
 	-- COLLSION HANDLER 
 	local function onGlobalCollision(event)
-		if event.phase == "began" then
+		if event.phase == "ended" then
+		    -- same object RR, SS, PP (1-3)
 			if event.object1.myName == event.object2.myName then
 				destroyObj(event.object1)
 				destroyObj(event.object2)
+				print("case 1-3")
+			-- R vs S case (4))
+			elseif event.object1.myName == "ROCK" and event.object2.myName == "SCISSOR" then
+				destroyObj(event.object1)
+				print("case 4")
+			-- S vs R case (5)
+			elseif event.object1.myName == "SCISSOR" and event.object2.myName == "ROCK" then
+				destroyObj(event.object2)
+				print("case 5")
+			-- R vs P case
+			elseif event.object1.myName == "ROCK" and event.object2.myName == "PAPER" then
+				destroyObj(event.object1)
+				print("case 6")
+			-- P vs R case
+			elseif event.object1.myName == "PAPER" and event.object2.myName == "ROCK" then
+				destroyObj(event.object2)
+				print("case 7")
+			-- S vs P case
+			elseif event.object1.myName == "SCISSOR" and event.object2.myName == "PAPER" then
+				destroyObj(event.object1)
+				print("case 8")
+			-- P vs S case
+			elseif event.object1.myName == "PAPER" and event.object2.myName == "SCISSOR" then
+				destroyObj(event.object2)
+				print("case 9")
 			end
 		end
 	end
@@ -272,7 +288,6 @@ function scene:create( event )
 	-- all display objects must be inserted into group
 	sceneGroup:insert( background )
 	sceneGroup:insert( grass)
-	--sceneGroup:insert( crate )
 	sceneGroup:insert( player1 )
 	sceneGroup:insert( player2 )
 	sceneGroup:insert( rock1 )
