@@ -65,4 +65,11 @@ settings =
 		ios = { "Icon.png", "Icon-*dpi.png", },
 		android = { "Icon.png", "Icon-??.png", "Icon-???.png", "LaunchScreen.storyboardc", },
 	},
+
+	window =
+    {
+        --defaultMode = "fullscreen",
+		enableCloseButton = true,
+    },  
+	
 }

@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------------------
 --
--- menu.lua
+-- info.lua
 --
 -----------------------------------------------------------------------------------------
 
@@ -46,11 +46,11 @@ function scene:create( event )
 	--local titleLogo = display.newImageRect( "logo.png", 264, 42 )
 	local titleLogo = display.newText( "Info", 264, 10, native.systemFont, 120)
 	titleLogo.x = display.contentCenterX
-	titleLogo.y = display.contentCenterY - 300
+	titleLogo.y = display.contentCenterY - 100
 
-    local info = display.newText ("This is not meant to be played on P.Cs \n The collisions with the objects are really buggy right now \n therefor no end game yet", 264,10, native.systemFont, 30)
+    local info = display.newText ("This is a Ipad version ported for MAC\nThere are some bugs at the momments \n", 264,10, native.systemFont, 30)
     info.x = titleLogo.x
-    info.y = titleLogo.y + 200
+    info.y = titleLogo.y + 150
 	
 	-- create a widget button (which will loads level1.lua on release)
 	playBtn = widget.newButton{
